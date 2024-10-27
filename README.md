@@ -28,7 +28,11 @@
 - clear = ctrl l = clear screen
 - history = show history of commands
   > history -c 
-- 
+- id = tell user logged in
+- sudo su
+- sudo su -
+- sudo -k = clear psw cache
+- passwd = change user password
 
 ---
 
