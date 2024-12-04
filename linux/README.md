@@ -13,7 +13,8 @@
 |stat||show statistics of a file <br> ``` stat /etc/passwd ``` <br> atime = access time <br> mtime = modified time <br> ctime = metadata changed time|
 |date||show current datetime|
 |file||display file datatype and info <br> ``` file /etc/* ``` <br> ``` file /etc/xpto.jpg ```|
-||||
+|wc|wc -l /etc/group|word count = display counts of line/word/byte count|
+|cut|cut -d" " -f10|will cut the line based on a delimiter space and get the 10th field  <br> ``` ifconfig \| grep ether \| cut -d" " -f10 > mac.txt ```|
 ||||
 ||||
 
@@ -46,6 +47,9 @@
 - sudo -k = clear psw cache
 - passwd = change user password
 - pwd = current working directory
+- grep =
+- tty = see terminals
+- watching the terminal = ifconfig > /dev/pts/0
 
 ### Filesystem
 
@@ -78,6 +82,24 @@ and /sbin.
 happen on the system.
 
 ![Linux](https://lcom.static.linuxfound.org/sites/lcom/files/standard-unix-filesystem-hierarchy.png)
+
+### Piping and Command Redirection
+
+1. STDIN (0)
+2. STDOUT (1)
+3. STDERR (2)
+
+Example to output error to a file: (no space between 2 and > , so 2>)
+``` tail -n 3 /etc/shadow 2> err.txt ```
+
+Example to concatenate the output to the file:
+``` tail -n 2 /etc/passwd >> output.txt ```
+
+Example to output both to different files:
+``` tail -n 2 /etc/passwd /etc/shadow > output.txt 2> error.txt ```
+
+Example to output both to same file (stderr to stdoutput):
+``` tail -n 2 /etc/passwd /etc/shadow > output.txt 2>&1 ```
 
 ---
 
@@ -549,5 +571,35 @@ rm -ri fil1 dir1/
 shred -vu -n 100 file1
 
 ----
+
+##########################
+## Piping and Command Redirection
+##########################
+ 
+## Piping Examples:
+ 
+ls -lSh /etc/ | head            # see the first 10 files by size
+ps -ef | grep sshd              # checking if sshd is running
+ps aux --sort=-%mem | head -n 3  # showing the first 3 process by memory consumption
+ 
+## Command Redirection
+ 
+# output redirection
+ps aux > running_processes.txt
+who -H > loggedin_users.txt
+ 
+# appending to a file
+id >> loggedin_users.txt
+ 
+# output and error redirection
+tail -n 10 /var/log/*.log > output.txt 2> errors.txt
+ 
+# redirecting both the output and errors to the same file
+tail -n 2 /etc/passwd /etc/shadow > output_errors.txt 2>&1
+ 
+cat -n /var/log/auth.log | grep -ai "authentication failure" | wc -l
+cat -n /var/log/auth.log | grep -ai "authentication failure" > auth.txt     # => piping and redirection
+
+-----
 
 
