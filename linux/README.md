@@ -16,7 +16,7 @@
 |wc|wc -l /etc/group|word count = display counts of line/word/byte count|
 |cut|cut -d" " -f10|will cut the line based on a delimiter space and get the 10th field  <br> ``` ifconfig \| grep ether \| cut -d" " -f10 > mac.txt ```|
 |tee|tee -a file.txt file2.txt |will output to the terminal and file ``` ifconfig \| grep ether \| tee m.txt ``` <br> -a will append|
-||||
+|plocate|sudo apt install plocate|Search files based on index created previously <br> sudo updatedb <br> plocate nameoffile|
 ||||
 ||||
 
