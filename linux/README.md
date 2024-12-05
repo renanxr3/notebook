@@ -604,4 +604,51 @@ cat -n /var/log/auth.log | grep -ai "authentication failure" > auth.txt     # =>
 
 -----
 
+##########################
+## Finding Files (find, plocate)
+##########################
+ 
+## LOCATE ##
+# locate is a symlink (shortcut) to plocate
+ 
+# updating the plocate db
+sudo updatedb
+ 
+# finding file by name
+locate filename # => filename is expanded to *filename*
+locate -i filename # => the filename is case insensitive
+locate -r '/filename$' # => finding by exact name
+ 
+# finding using the basename
+locate -b filename
+ 
+# finding using regular expressions
+locate -r 'regex'
+ 
+# checking that the file exists
+locate -e filename
+ 
+# showing command path
+which command
+which -a command
+ 
+ 
+## FIND ##
+find PATH OPTIONS
+ 
+# Example: find ~ -type f -size +1M # => finding all files in ~ bigger than 1 MB
+ 
+## Options:
+# -type f, d, l, s, p
+# -name filename
+# -iname filename # => case-insensitive
+# -size n, +n, -n
+# -perm permissions
+# -links n, +n, -n
+# -atime n, -mtime n, ctime n
+# -user owner
+# -group group_owner
+
+---
+
 
