@@ -17,8 +17,14 @@
 |cut|cut -d" " -f10|will cut the line based on a delimiter space and get the 10th field  <br> ``` ifconfig \| grep ether \| cut -d" " -f10 > mac.txt ```|
 |tee|tee -a file.txt file2.txt |will output to the terminal and file ``` ifconfig \| grep ether \| tee m.txt ``` <br> -a will append|
 |plocate|sudo apt install plocate|Search files based on index created previously <br> sudo updatedb <br> plocate nameoffile|
+|find|||
+|cmp|||
+|sha256sum|sha256sum name_of_file.txt name_of_file2.txt|Will generate Checksum hash for the list of files|
+|diff|diff file1 file2|Will compare and show differences of two files|
+|patch|patch -w original.txt patched.txt|diff and apply differences to a file|
 ||||
 ||||
+
 
 - Terminator 
   > sudo apt install terminator 
