@@ -715,4 +715,31 @@ Ctrl+w => move between files
 
 ---
 
+## Archiving and compressing files 
 
+### TAR
+
+- c = creates
+- x = extracts
+- t = displays contents
+
+- czvf output.gz input_in_list
+
+
+---
+
+## Hardlink and Symbolic Links
+
+- Hardlink: both files point to the same file, changing one will change the other (same inode). You cannot hardlink directories or other disks.
+
+  ln origin target
+
+- Symlink (soft links): similar to hardlink but doesn't share the same inode. Symlinks can be broken (moving or deleting the origin file). You can create symlink to directories.
+
+  ln -s origin target
+
+---
+
+## Menu
+
+## Submenu
