@@ -6,6 +6,7 @@
 
 |Name|Command|Comments|
 |---|---|---|
+||||
 |Terminator|sudo apt install terminator |Needs GUI, terminal with tabs in a single instance|
 |ifconfig|sudo apt install net-tools||
 |tree|sudo apt install tree|show folder/file in tree format in terminal|
@@ -32,6 +33,94 @@
   > sudo apt install net-tools
 - tree
   > sudo apt install tree
+
+### TMUX
+
+| Command               | Description                                      |
+|-----------------------|--------------------------------------------------|
+| `tmux`                | Start a new tmux session.                        |
+| `tmux new -s [name]`  | Start a new session with the name `[name]`.      |
+| `tmux attach -t [name]` | Attach to a session named `[name]`.            |
+| `tmux ls`             |                                                  | 
+| `Ctrl+b` then `,`     | Rename                                           | 
+| `Ctrl+b` then `d`     | Detach from the current session.                 |
+| `Ctrl+b` then `c`     | Create a new window.                             |
+| `Ctrl+b` then `w`     | List all windows.                                |
+| `Ctrl+b` then `n`     | Move to the next window.                         |
+| `Ctrl+b` then `p`     | Move to the previous window.                     |
+| `Ctrl+b` then `&`     | Kill the current window.                         |
+| `Ctrl+b` then `%`     | Split window vertically.                         |
+| `Ctrl+b` then `"`     | Split window horizontally.                       |
+| `Ctrl+b` then `arrow key` | Navigate through panes.                     |
+| `Ctrl+b` then `x`     | Kill the current pane.                           |
+| `tmux kill-session -t [name]` | Kill the session named `[name]`.         |
+| `tmux list-sessions`  | List all tmux sessions.                          |
+
+
+### systemctl
+
+| Command                                | Description                                              |
+|----------------------------------------|----------------------------------------------------------|
+| `systemctl`                            | List available subcommands and show syntax.              |
+| `systemctl start [service]`            | Start the specified service.                             |
+| `systemctl stop [service]`             | Stop the specified service.                              |
+| `systemctl restart [service]`          | Restart the specified service.                           |
+| `systemctl reload [service]`           | Reload the configuration of the specified service.       |
+| `systemctl status [service]`           | Show the status of the specified service.                |
+| `systemctl enable [service]`           | Enable the specified service to start on boot.           |
+| `systemctl disable [service]`          | Disable the specified service from starting on boot.     |
+| `systemctl is-enabled [service]`       | Check if the specified service is enabled.               |
+| `systemctl is-active [service]`        | Check if the specified service is active.                |
+| `systemctl list-units`                 | List all active units.                                   |
+| `systemctl list-units --all`           | List all units, including inactive ones.                 |
+| `systemctl list-unit-files`            | List all unit files and their enablement status.         |
+| `systemctl daemon-reload`              | Reload systemd manager configuration.                    |
+| `systemctl mask [service]`             | Mask the specified service to prevent it from starting.  |
+| `systemctl unmask [service]`           | Unmask the specified service to allow it to start.       |
+| `systemctl show [service]`             | Show properties of the specified service.                |
+
+
+## To create a service
+
+1. ``` sudo nano /etc/systemd/system/my_service.service ```
+2. Edit the file
+   ```
+    [Unit]
+    Description=My Custom Service
+    After=network.target
+
+    [Service]
+    ExecStart=/path/to/your/script.sh
+    Restart=always
+    User=your_username
+    Group=your_groupname
+
+    [Install]
+    WantedBy=multi-user.target
+   ```
+* [Unit]: This section contains general information about the service. Description is a brief description of the service, and After specifies the service dependencies.
+
+* [Service]: This section defines how the service should behave. ExecStart specifies the command to run, Restart defines the restart behavior, and User and Group specify the user and group under which the service should run.
+
+* [Install]: This section defines how the service should be installed. WantedBy specifies the target to which this service belongs.
+
+3. Reload the systemd manager configuration:
+
+  sudo systemctl daemon-reload
+
+4. Start the service:
+
+  sudo systemctl start my_service
+
+5. Enable the service to start on boot:
+
+  sudo systemctl enable my_service
+
+6. Check the status of the service:
+
+  sudo systemctl status my_service
+
+
 
 ### Commands
 
