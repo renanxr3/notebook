@@ -2,17 +2,60 @@
 
 ## Tags Corpo
 
+| Elemento           | Classe Principal                      | Descrição                                                                 |
+|--------------------|---------------------------------------|--------------------------------------------------------------------------|
+| Fundo da Página    | `bg-white dark:bg-gray-900`           | Cor de fundo da página com suporte a modo escuro                         |
+| Texto Padrão       | `text-gray-800 dark:text-gray-100`    | Cor de texto padrão com suporte a modo escuro                            |
+| Corpo              | `font-sans antialiased`               | Fonte padrão sem serifa com suavização de texto                          |
+| Altura Mínima      | `min-h-screen`                        | Altura mínima de 100% da viewport                                        |
+| Padding Global     | `p-4 md:p-8`                          | Padding responsivo para todo o corpo                                     |
+| Espaçamento        | `leading-relaxed`                     | Espaçamento entre linhas para melhor legibilidade                        |
+| Cor de Fundo       | `bg-gradient-to-br from-blue-50 to-indigo-100` | Gradiente de fundo                                                       |
+| Largura Máxima     | `max-w-screen-xl mx-auto`             | Limita a largura máxima e centraliza                                     |
+| Overflow           | `overflow-x-hidden`                   | Remove barra de scroll horizontal                                        |
+| Transição          | `transition duration-300`             | Animação suave de transição                                              |
+
 ## Tags Estilo
+
+| Elemento           | Classe Principal                      | Descrição                                                                 |
+|--------------------|---------------------------------------|--------------------------------------------------------------------------|
+| Sombra             | `shadow shadow-lg shadow-xl`          | Adiciona sombra ao elemento com diferentes intensidades                  |
+| Borda              | `border border-gray-300`              | Adiciona borda com cor customizável                                      |
+| Raio da Borda      | `rounded rounded-lg rounded-full`     | Arredonda as bordas com diferentes raios                                 |
+| Opacidade          | `opacity-50 opacity-75 opacity-100`   | Controla a transparência do elemento                                     |
+| Display            | `flex block inline grid`              | Define o tipo de exibição do elemento                                    |
+| Posição            | `absolute relative fixed sticky`     | Controla o posicionamento do elemento                                    |
+| Z-index            | `z-10 z-20 z-50`                     | Define a ordem de sobreposição dos elementos                             |
+| Escala             | `scale-75 scale-100 scale-125`       | Amplia ou reduz o tamanho do elemento                                    |
+| Rotação            | `rotate-0 rotate-45 rotate-90`       | Rotaciona o elemento em graus                                            |
+| Filtro             | `blur grayscale sepia`                | Aplica efeitos visuais ao elemento                                       |
+| Cursor             | `cursor-pointer cursor-default`      | Define o tipo de cursor ao passar sobre o elemento                       |
+| Hover              | `hover:bg-blue-600 hover:text-white` | Aplica estilos quando o elemento sofre hover                             |
+| Focus              | `focus:outline focus:ring`            | Aplica estilos quando o elemento recebe foco                             |
+| Active             | `active:scale-95`                     | Aplica estilos quando o elemento está ativo                              |
 
 ## Tags de Texto
 
-
+| Elemento           | Classe Principal                              | Descrição                                                         |
+|--------------------|-----------------------------------------------|-------------------------------------------------------------------|
+| Tamanho do Texto   | `text-xs text-sm text-base text-lg text-xl`    | Define o tamanho da fonte                                         |
+| Peso da Fonte      | `font-light font-normal font-medium font-bold` | Controla o peso (negrito) do texto                                |
+| Cor do Texto       | `text-gray-700 text-red-500 text-blue-600`     | Define a cor do texto                                             |
+| Alinhamento        | `text-left text-center text-right`             | Alinha o texto                                                    |
+| Espaçamento Letras | `tracking-tight tracking-normal tracking-wide` | Ajusta o espaçamento entre letras                                 |
+| Espaçamento Linhas | `leading-tight leading-normal leading-loose`   | Ajusta o espaçamento entre linhas                                 |
+| Estilo da Fonte    | `italic not-italic`                           | Aplica ou remove itálico                                          |
+| Transformação      | `uppercase lowercase capitalize`               | Transforma o texto em maiúsculas, minúsculas ou capitalizado      |
+| Quebra de Texto    | `break-normal break-words break-all`           | Controla como o texto é quebrado                                  |
+| Decoração          | `underline line-through no-underline`          | Aplica sublinhado, tachado ou remove decoração                    |
+| Truncamento        | `truncate`                                     | Limita o texto a uma linha com reticências                        |
+| Overflow Texto     | `overflow-ellipsis overflow-clip`              | Controla overflow do texto com reticências ou corte               |
 
 -----
 
 ## Instalação
 
-Claro! Aqui está um resumo rápido para criar um projeto com React, Next.js e Tailwind CSS:
+### Next.js + Tailwind CSS
 
 1. **Instalação do Next.js**:
    ```bash
@@ -61,12 +104,9 @@ Claro! Aqui está um resumo rápido para criar um projeto com React, Next.js e T
    }
    ```
 
-E pronto! Você agora tem um projeto Next.js configurado com Tailwind CSS. Se precisar de mais detalhes ou ajuda em algum desses passos, estou aqui para ajudar! 🚀
-
-
 ---
 
-Claro! Aqui está um guia rápido para configurar um projeto React.js com Tailwind CSS:
+### React.js + Tailwind CSS
 
 1. **Criação do Projeto React.js**:
    ```bash
@@ -116,13 +156,9 @@ Claro! Aqui está um guia rápido para configurar um projeto React.js com Tailwi
    export default App;
    ```
 
-E pronto! Você agora tem um projeto React.js configurado com Tailwind CSS. Se precisar de mais detalhes ou ajuda em algum desses passos, estou aqui para ajudar! 🚀
-
-
-
 ---
 
-Claro! Vamos configurar um projeto React.js com Tailwind CSS usando Vite:
+### Vite + Tailwind CSS
 
 1. **Criação do Projeto Vite com React.js**:
    ```bash
@@ -174,46 +210,7 @@ Claro! Vamos configurar um projeto React.js com Tailwind CSS usando Vite:
    export default App;
    ```
 
-E pronto! Você agora tem um projeto React.js configurado com Tailwind CSS usando Vite. Se precisar de mais detalhes ou ajuda em algum desses passos, estou aqui para ajudar! 🚀
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-Claro! Aqui está uma tabela com algumas das principais classes do Tailwind CSS que você pode usar para formatar um site com um menu de navegação, submenu e conteúdo no meio:
-
-| Elemento           | Classe Principal                      | Descrição                                                                 |
-|--------------------|---------------------------------------|--------------------------------------------------------------------------|
-| Container          | `container mx-auto`                   | Centraliza o conteúdo com margens automáticas                            |
-| Menu de Navegação  | `flex justify-between items-center`   | Alinha itens de navegação em uma linha, justificados entre si            |
-| Item do Menu       | `px-4 py-2 text-lg`                   | Padding e tamanho do texto dos itens do menu                             |
-| Submenu            | `absolute hidden group-hover:block`   | Submenu escondido até o menu principal ser hover                          |
-| Item do Submenu    | `px-4 py-2 text-sm`                   | Padding e tamanho do texto dos itens do submenu                          |
-| Cabeçalho          | `text-3xl font-bold mb-4`             | Tamanho do texto e negrito, com margem inferior                          |
-| Parágrafo          | `text-base leading-relaxed`           | Tamanho do texto e espaçamento entre linhas para legibilidade            |
-| Botão              | `bg-blue-500 text-white py-2 px-4 rounded` | Cor de fundo, cor do texto, padding e bordas arredondadas para botões  |
-| Seção do Conteúdo  | `py-8`                                | Padding vertical para espaçamento entre seções                           |
-| Rodapé             | `text-center text-sm py-4 border-t`   | Texto centralizado, tamanho do texto, padding e borda superior           |
-
-Estas classes são um ponto de partida para a estrutura e formatação do seu site. Você pode ajustá-las e combiná-las conforme necessário para criar o layout e o estilo desejados. Se precisar de mais ajuda ou sugestões específicas, é só avisar! 🚀
