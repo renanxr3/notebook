@@ -1,834 +1,499 @@
-# Linux
+# Linux Administration Cheat Sheet
 
-## UDemy - Master Linux Administration
+## Table of Contents
 
-### Apps
+| Section | Description |
+|---|---|
+| [1. Essential Apps & Commands](#1-essential-apps--commands) | Common apps and install commands |
+| [2. TMUX Shortcuts](#2-tmux-shortcuts) | TMUX command reference |
+| [3. systemctl Commands](#3-systemctl-commands) | Service management commands |
+| [4. Common Linux Commands](#4-common-linux-commands) | Frequently used commands |
+| [5. Filesystem Hierarchy](#5-filesystem-hierarchy) | Linux directory structure |
+| [6. Piping & Redirection](#6-piping--redirection) | Streams and redirection examples |
+| [7. Getting Help in Linux](#7-getting-help-in-linux) | Help and manual commands |
+| [8. Keyboard Shortcuts](#8-keyboard-shortcuts) | Terminal shortcuts |
+| [9. Bash History](#9-bash-history) | History commands |
+| [10. Root Access (sudo, su)](#10-root-access-sudo-su) | Root and sudo commands |
+| [11. Linux Paths & Navigation](#11-linux-paths--navigation) | Path and navigation commands |
+| [12. The ls Command](#12-the-ls-command) | ls command options |
+| [13. File Timestamps & Date](#13-file-timestamps--date) | File timestamps and date commands |
+| [14. Viewing Files](#14-viewing-files-cat-less-head-tail-watch) | File viewing commands |
+| [15. Working with Files & Directories](#15-working-with-files--directories) | File and directory operations |
+| [16. Piping & Redirection Examples](#16-piping--redirection-examples) | Piping and redirection examples |
+| [17. Finding Files](#17-finding-files-find-plocate) | File search commands |
+| [18. VIM Editor](#18-vim-editor) | VIM shortcuts and commands |
+| [19. Archiving & Compression](#19-archiving--compression) | Archive and compression commands |
+| [20. Hardlink & Symbolic Links](#20-hardlink--symbolic-links) | Link commands |
 
-|Name|Command|Comments|
-|---|---|---|
-||||
-|Terminator|sudo apt install terminator |Needs GUI, terminal with tabs in a single instance|
-|ifconfig|sudo apt install net-tools||
-|tree|sudo apt install tree|show folder/file in tree format in terminal|
-|du||disk usage will show size of folder  <br> ``` du -sh /etc ``` |
-|stat||show statistics of a file <br> ``` stat /etc/passwd ``` <br> atime = access time <br> mtime = modified time <br> ctime = metadata changed time|
-|date||show current datetime|
-|file||display file datatype and info <br> ``` file /etc/* ``` <br> ``` file /etc/xpto.jpg ```|
-|wc|wc -l /etc/group|word count = display counts of line/word/byte count|
-|cut|cut -d" " -f10|will cut the line based on a delimiter space and get the 10th field  <br> ``` ifconfig \| grep ether \| cut -d" " -f10 > mac.txt ```|
-|tee|tee -a file.txt file2.txt |will output to the terminal and file ``` ifconfig \| grep ether \| tee m.txt ``` <br> -a will append|
-|plocate|sudo apt install plocate|Search files based on index created previously <br> sudo updatedb <br> plocate nameoffile|
-|find|||
-|cmp|||
-|sha256sum|sha256sum name_of_file.txt name_of_file2.txt|Will generate Checksum hash for the list of files|
-|diff|diff file1 file2|Will compare and show differences of two files|
-|patch|patch -w original.txt patched.txt|diff and apply differences to a file|
-||||
-||||
+## 1. Essential Apps & Commands
 
+| Name         | Command                        | Description/Comments |
+|--------------|-------------------------------|----------------------|
+| Terminator   | sudo apt install terminator   | Terminal with tabs (GUI required) |
+| ifconfig     | sudo apt install net-tools    | Network interface info |
+| tree         | sudo apt install tree         | Show folder/file tree in terminal |
+| du           | du -sh /etc                   | Disk usage of folder |
+| stat         | stat /etc/passwd              | File statistics (atime, mtime, ctime) |
+| date         | date                         | Show current datetime |
+| file         | file /etc/*                   | Display file type info |
+| wc           | wc -l /etc/group              | Line/word/byte count |
+| cut          | cut -d" " -f10                | Cut by delimiter, get 10th field |
+| tee          | tee -a file.txt file2.txt     | Output to terminal and file (append with -a) |
+| plocate      | sudo apt install plocate      | Search files by index (sudo updatedb first) |
+| sha256sum    | sha256sum file.txt            | Generate checksum hash |
+| diff         | diff file1 file2              | Compare files |
+| patch        | patch -w original.txt patched.txt | Apply differences to file |
 
-- Terminator 
-  > sudo apt install terminator 
-- ifconfig
-  > sudo apt install net-tools
-- tree
-  > sudo apt install tree
+## 2. TMUX Shortcuts
 
-### TMUX
+| Command | Description |
+|---------|-------------|
+| tmux | Start a new tmux session |
+| tmux new -s [name] | Start a new session with name |
+| tmux attach -t [name] | Attach to session |
+| tmux ls | List sessions |
+| Ctrl+b , | Rename session |
+| Ctrl+b d | Detach session |
+| Ctrl+b c | New window |
+| Ctrl+b w | List windows |
+| Ctrl+b n | Next window |
+| Ctrl+b p | Previous window |
+| Ctrl+b & | Kill window |
+| Ctrl+b % | Split vertically |
+| Ctrl+b " | Split horizontally |
+| Ctrl+b arrow | Navigate panes |
+| Ctrl+b x | Kill pane |
+| tmux kill-session -t [name] | Kill session |
+| tmux list-sessions | List all sessions |
 
-| Command               | Description                                      |
-|-----------------------|--------------------------------------------------|
-| `tmux`                | Start a new tmux session.                        |
-| `tmux new -s [name]`  | Start a new session with the name `[name]`.      |
-| `tmux attach -t [name]` | Attach to a session named `[name]`.            |
-| `tmux ls`             |                                                  | 
-| `Ctrl+b` then `,`     | Rename                                           | 
-| `Ctrl+b` then `d`     | Detach from the current session.                 |
-| `Ctrl+b` then `c`     | Create a new window.                             |
-| `Ctrl+b` then `w`     | List all windows.                                |
-| `Ctrl+b` then `n`     | Move to the next window.                         |
-| `Ctrl+b` then `p`     | Move to the previous window.                     |
-| `Ctrl+b` then `&`     | Kill the current window.                         |
-| `Ctrl+b` then `%`     | Split window vertically.                         |
-| `Ctrl+b` then `"`     | Split window horizontally.                       |
-| `Ctrl+b` then `arrow key` | Navigate through panes.                     |
-| `Ctrl+b` then `x`     | Kill the current pane.                           |
-| `tmux kill-session -t [name]` | Kill the session named `[name]`.         |
-| `tmux list-sessions`  | List all tmux sessions.                          |
+## 3. systemctl Commands
 
+| Command | Description |
+|---------|-------------|
+| systemctl | List subcommands and syntax |
+| systemctl start [service] | Start service |
+| systemctl stop [service] | Stop service |
+| systemctl restart [service] | Restart service |
+| systemctl reload [service] | Reload config |
+| systemctl status [service] | Show status |
+| systemctl enable [service] | Enable on boot |
+| systemctl disable [service] | Disable on boot |
+| systemctl is-enabled [service] | Check enabled |
+| systemctl is-active [service] | Check active |
+| systemctl list-units | List active units |
+| systemctl list-units --all | List all units |
+| systemctl list-unit-files | List unit files |
+| systemctl daemon-reload | Reload manager config |
+| systemctl mask [service] | Mask service |
+| systemctl unmask [service] | Unmask service |
+| systemctl show [service] | Show properties |
 
-### systemctl
+### Creating a Custom Service
 
-| Command                                | Description                                              |
-|----------------------------------------|----------------------------------------------------------|
-| `systemctl`                            | List available subcommands and show syntax.              |
-| `systemctl start [service]`            | Start the specified service.                             |
-| `systemctl stop [service]`             | Stop the specified service.                              |
-| `systemctl restart [service]`          | Restart the specified service.                           |
-| `systemctl reload [service]`           | Reload the configuration of the specified service.       |
-| `systemctl status [service]`           | Show the status of the specified service.                |
-| `systemctl enable [service]`           | Enable the specified service to start on boot.           |
-| `systemctl disable [service]`          | Disable the specified service from starting on boot.     |
-| `systemctl is-enabled [service]`       | Check if the specified service is enabled.               |
-| `systemctl is-active [service]`        | Check if the specified service is active.                |
-| `systemctl list-units`                 | List all active units.                                   |
-| `systemctl list-units --all`           | List all units, including inactive ones.                 |
-| `systemctl list-unit-files`            | List all unit files and their enablement status.         |
-| `systemctl daemon-reload`              | Reload systemd manager configuration.                    |
-| `systemctl mask [service]`             | Mask the specified service to prevent it from starting.  |
-| `systemctl unmask [service]`           | Unmask the specified service to allow it to start.       |
-| `systemctl show [service]`             | Show properties of the specified service.                |
+1. `sudo nano /etc/systemd/system/my_service.service`
+2. Edit file:
+   ```ini
+   [Unit]
+   Description=My Custom Service
+   After=network.target
 
+   [Service]
+   ExecStart=/path/to/your/script.sh
+   Restart=always
+   User=your_username
+   Group=your_groupname
 
-## To create a service
-
-1. ``` sudo nano /etc/systemd/system/my_service.service ```
-2. Edit the file
+   [Install]
+   WantedBy=multi-user.target
    ```
-    [Unit]
-    Description=My Custom Service
-    After=network.target
+3. Reload config: `sudo systemctl daemon-reload`
+4. Start: `sudo systemctl start my_service`
+5. Enable: `sudo systemctl enable my_service`
+6. Status: `sudo systemctl status my_service`
 
-    [Service]
-    ExecStart=/path/to/your/script.sh
-    Restart=always
-    User=your_username
-    Group=your_groupname
+## 4. Common Linux Commands
 
-    [Install]
-    WantedBy=multi-user.target
-   ```
-* [Unit]: This section contains general information about the service. Description is a brief description of the service, and After specifies the service dependencies.
+| Command | Description |
+|---------|-------------|
+| ls | List files and folders |
+| ping | Test network connectivity |
+| man | Manual/help for command |
+| type | Display path of executable |
+| clear | Clear screen (Ctrl+L) |
+| history | Show command history |
+| id | Show user info |
+| sudo su | Become root temporarily |
+| sudo su - | Become root (login shell) |
+| sudo -k | Clear sudo password cache |
+| passwd | Change user password |
+| pwd | Print working directory |
+| grep | Search text |
+| tty | Show terminals |
+| ifconfig > /dev/pts/0 | Watch terminal |
 
-* [Service]: This section defines how the service should behave. ExecStart specifies the command to run, Restart defines the restart behavior, and User and Group specify the user and group under which the service should run.
+## 5. Filesystem Hierarchy
 
-* [Install]: This section defines how the service should be installed. WantedBy specifies the target to which this service belongs.
+| Directory | Description |
+|-----------|-------------|
+| /bin | User binaries |
+| /sbin | Superuser binaries |
+| /boot | Boot files |
+| /home | User home directories |
+| /root | Root's home directory |
+| /dev | Device files |
+| /etc | System-wide config files |
+| /lib | Shared libraries |
+| /media | External storage mount |
+| /mnt | Temporary mount |
+| /tmp | Temporary files |
+| /proc | Hardware info (virtual) |
+| /sys | Device/kernel info |
+| /srv | Server data |
+| /run | RAM temp files |
+| /usr | User binaries/libs |
+| /var | Variable files/logs |
 
-3. Reload the systemd manager configuration:
+![Linux Filesystem](https://lcom.static.linuxfound.org/sites/lcom/files/standard-unix-filesystem-hierarchy.png)
 
-  sudo systemctl daemon-reload
+## 6. Piping & Redirection
 
-4. Start the service:
+| Stream | Number |
+|--------|--------|
+| STDIN  | 0 |
+| STDOUT | 1 |
+| STDERR | 2 |
 
-  sudo systemctl start my_service
+| Example | Description |
+|---------|-------------|
+| `tail -n 3 /etc/shadow 2> err.txt` | Output error to file |
+| `tail -n 2 /etc/passwd >> output.txt` | Append output |
+| `tail -n 2 /etc/passwd /etc/shadow > output.txt 2> error.txt` | Output and error to different files |
+| `tail -n 2 /etc/passwd /etc/shadow > output.txt 2>&1` | Output and error to same file |
 
-5. Enable the service to start on boot:
+## 7. Getting Help in Linux
 
-  sudo systemctl enable my_service
+| Command | Description |
+|---------|-------------|
+| man command | Show manual page |
+| type rm | Check if command is built-in or executable |
+| help command | Help for shell built-in |
+| command --help | Help for executable |
+| man -k uname | Search man pages |
+| apropos passwd | Search man pages |
 
-6. Check the status of the service:
+**MAN Page Shortcuts:**
 
-  sudo systemctl status my_service
+| Shortcut | Action |
+|----------|-------|
+| h | Help |
+| q | Quit |
+| enter | Next line |
+| space | Next screen |
+| /string | Search forward |
+| ?string | Search backward |
+| n/N | Next/previous occurrence |
 
+## 8. Keyboard Shortcuts
 
+| Shortcut | Action |
+|----------|-------|
+| TAB | Autocomplete command/filename |
+| TAB TAB | List all matches |
+| Ctrl+L | Clear terminal |
+| Ctrl+D | Exit shell |
+| Ctrl+U | Cut current line |
+| Ctrl+A | Move to start of line |
+| Ctrl+E | Move to end of line |
+| Ctrl+C | Stop command |
+| Ctrl+Z | Sleep running program |
+| Ctrl+Alt+T | Open terminal |
 
-### Commands
+## 9. Bash History
 
-- ls = list files and folders
-- ping
-- man = manual / help of a command
-  > space or ctrl f = prox pagina  
-  > ctrl b = prev page  
-  > g = go to begin  
-  > G = go to end  
-  > / = search
-  
-  > man -k "term to be searched"
-- type = display path of a executable
-- clear = ctrl l = clear screen
-- history = show history of commands
-  > history -c 
-- id = tell user logged in
-- sudo su
-- sudo su -
-- sudo -k = clear psw cache
-- passwd = change user password
-- pwd = current working directory
-- grep =
-- tty = see terminals
-- watching the terminal = ifconfig > /dev/pts/0
+| Command | Description |
+|---------|-------------|
+| history | Show history |
+| history -d 100 | Delete line 100 |
+| history -c | Clear history |
+| echo $HISTFILESIZE | Commands in history file |
+| echo $HISTSIZE | Commands in memory |
+| !! | Rerun last command |
+| !20 | Run 20th command |
+| !-10 | Run last 10th command |
+| !abc | Run last command starting with abc |
+| !abc:p | Print last command starting with abc |
+| Ctrl+R | Reverse search |
+| HISTTIMEFORMAT="%d/%m/%y %T" | Record date/time |
 
-### Filesystem
-
-The Filesystem Hierarchy Standard - 1
- ● /bin contains binaries or user executable files which are available to all users.
- ● /sbin contains applications that only the superuser (hence the initial s) will need.
- ● /boot contains files required for starting your system.
- ● /home is where you will find your users’ home directories. Under this directory there is another 
-directory for each user, if that particular user has a home directory. 
-root has its home directory separated from the rest of the users’ home directories and is /root
- ● /dev contains device files. 
-● /etc contains most, if not all system-wide configuration files.
- ● /lib contains shared library files used by different applications. 
-● /media is used for external storage will be automatically mounted.
- ● /mnt is like /media but it’s not very often used these days
-
- The Filesystem Hierarchy Standard - 2
- ● /tmp contains temporary files, usually saved there by applications that are running. 
-Non-privileged users may also store files here temporarily.
- ● /proc is a virtual directory. It contains information about your computer hardware, such as 
-information about your CPU, RAM memory or Kernel. The files and directories are generated 
-when your computer starts, or on the fly, as your system is running and things change.
- ● /sys contains information about devices, drivers, and some kernel features.
- ● /srv  contains data for servers. 
-● /run is a temporary file system which runs in RAM.
- ● /usr contains many other subdirectories binaries files, shared libraries and so on. On some 
-distributions like CentOS many commands are saved in /usr/bin and /usr/sbin instead of /bin 
-and /sbin.
- ● /var typically contains variable-length files such as logs which are files that register events that 
-happen on the system.
-
-![Linux](https://lcom.static.linuxfound.org/sites/lcom/files/standard-unix-filesystem-hierarchy.png)
-
-### Piping and Command Redirection
-
-1. STDIN (0)
-2. STDOUT (1)
-3. STDERR (2)
-
-Example to output error to a file: (no space between 2 and > , so 2>)
-``` tail -n 3 /etc/shadow 2> err.txt ```
-
-Example to concatenate the output to the file:
-``` tail -n 2 /etc/passwd >> output.txt ```
-
-Example to output both to different files:
-``` tail -n 2 /etc/passwd /etc/shadow > output.txt 2> error.txt ```
-
-Example to output both to same file (stderr to stdoutput):
-``` tail -n 2 /etc/passwd /etc/shadow > output.txt 2>&1 ```
-
----
-
-[Duck Duck Go](https://duckduckgo.com)  
-<https://www.markdownguide.org>  
-<fake@example.com>  
-
-
----
-
-
-## Getting Help in Linux
-
- 
-### MAN Pages
-man command     # => Ex: man ls
- 
-### The man page is displayed with the less command
-#### SHORTCUTS:
- h         => getting help
- q         => quit
- enter     => show next line
- space     => show next screen
- /string   => search forward for a string
- ?string   => search backwards for a string
- n / N     => next/previous appearance
- 
-### checking if a command is shell built-in or executable file
-type rm        # => rm is /usr/bin/rm
-type cd        # => cd is a shell builtin
- 
-### getting help for shell built-in commands
-help command    # => Ex: help cd
-command --help  # => Ex: rm --help
- 
-### searching for a command, feature or keyword in all man Pages
-man -k uname
-man -k "copy files"
-apropos passwd
-
----
-
-
-## Keyboard Shortcuts
-
-TAB  # autocompletes the command or the filename if its unique
-TAB TAB (press twice)   # displays all commands or filenames that start with those letters
- 
-### clearing the terminal
-CTRL + L
- 
-### closing the shell (exit)
-CTRL + D
- 
-### cutting (removing) the current line 
-CTRL + U
- 
-### moving the cursor to the start of the line
-CTRL + A
- 
-### moving the cursor to the end of the line
-Ctrl + E
- 
-### stopping the current command
-CTRL + C
- 
-### sleeping a the running program
-CTRL + Z
- 
-### opening a terminal 
-CTRL + ALT + T
-
----
-
-
-## Bash History
-
- 
-### showing the history
-history
- 
-### removing a line (ex: 100) from the history
-history -d 100
- 
-### removing the entire history
-history -c
- 
-### printing the no. of commands saved in the history file (~/.bash_history)
-echo $HISTFILESIZE
- 
-### printing the no. of history commands saved in the memory
-echo $HISTSIZE
- 
-### rerunning the last command from the history
-!!
- 
-### running  a specific command from the history (ex: the 20th command)
-!20
- 
-### running the last nth (10th) command from the history
-!-10
- 
-### running the last command starting with abc 
-!abc
- 
-### printing the last command starting with abc 
-!abc:p
- 
-### reverse searching into the history
-CTRL + R
- 
-### recording the date and time of each command in the history
-HISTTIMEFORMAT="%d/%m/%y %T"
- 
-### making it persistent after reboot
-echo "HISTTIMEFORMAT=\"%d/%m/%y %T\"" >> ~/.bashrc
-<br> or <br>
+Make persistent:
+```bash
 echo 'HISTTIMEFORMAT="%d/%m/%y %T"' >> ~/.bashrc
+```
+
+## 10. Root Access (sudo, su)
+
+| Command | Description |
+|---------|-------------|
+| sudo command | Run as root |
+| sudo su | Become root (user password) |
+| sudo passwd root | Set root password |
+| passwd username | Change user password |
+| su | Become root (root password) |
+
+## 11. Linux Paths & Navigation
+
+| Symbol | Meaning |
+|--------|--------|
+| . | Current directory |
+| .. | Parent directory |
+| ~ | User's home directory |
+
+| Command | Description |
+|---------|-------------|
+| cd | Go to home directory |
+| cd ~ | Go to home directory |
+| cd - | Go to last directory |
+| cd /path_to_dir | Go to specific directory |
+| pwd | Print working directory |
+
+Install tree:
+`sudo apt install tree`
+
+| Command | Description |
+|---------|-------------|
+| tree directory/ | Show tree |
+| tree -d . | Show directories only |
+| tree -f . | Show absolute paths |
+
+## 12. The ls Command
+
+| Option | Description |
+|--------|-------------|
+| ls | List current directory |
+| ls . | List current directory |
+| ls ~ /var / | List multiple directories |
+| ls -l ~ | Long listing |
+| ls -la ~ | List all (including hidden) |
+| ls -1 /etc | Single column |
+| ls -ld /etc | Info about directory |
+| ls -h /etc | Human readable size |
+| ls -Sh /var/log | Sort by size |
+| ls -lX /etc | Sort by extension |
+| ls --hide=*.log /var/log | Hide files |
+| ls -lR ~ | Recursive listing |
+| ls -li /etc | Show inode number |
+
+**Note:** ls does not show directory size. Use `du -sh ~`.
+
+## 13. File Timestamps & Date
+
+| Command | Description |
+|---------|-------------|
+| ls -lu | Show atime |
+| ls -l | Show mtime |
+| ls -lt | Sort by mtime |
+| ls -lc | Show ctime |
+| stat file.txt | All timestamps |
+| ls -l --full-time /etc/ | Full timestamp |
+| touch file.txt | Create/update file |
+| touch -a file | Update access time |
+| touch -m file | Update modification time |
+| touch -m -t 201812301530.45 a.txt | Set mtime |
+| touch -d "2010-10-31 15:45:30" a.txt | Set atime/mtime |
+| touch a.txt -r b.txt | Set timestamp from another file |
+| date | Show date/time |
+| cal | Show calendar |
+| cal 2021 | Calendar for year |
+| cal 7 2021 | Calendar for month/year |
+| cal -3 | Previous/current/next month |
+| date --set="2 OCT 2020 18:00:00" | Set date/time |
+
+## 14. Viewing Files (cat, less, head, tail, watch)
+
+| Command | Description |
+|---------|-------------|
+| cat filename | Show file contents |
+| cat filename1 filename2 | Show multiple files |
+| cat -n filename | Show line numbers |
+| cat filename1 filename2 > filename3 | Concatenate files |
+| less filename | View file with less |
+| tail filename | Last 10 lines |
+| tail -n 15 filename | Last 15 lines |
+| tail -n +5 filename | From line 5 |
+| tail -f filename | Real-time tail |
+| head filename | First 10 lines |
+| head -n 15 filename | First 15 lines |
+| watch -n 3 ls -l | Repeat command every 3s |
+
+**less shortcuts:**
+
+| Shortcut | Action |
+|----------|-------|
+| h | Help |
+| q | Quit |
+| enter | Next line |
+| space | Next screen |
+| /string | Search forward |
+| ?string | Search backward |
+| n/N | Next/previous occurrence |
+
+## 15. Working with Files & Directories
+
+| Command | Description |
+|---------|-------------|
+| touch filename | Create/update file |
+| mkdir dir1 | Create directory |
+| mkdir -p mydir1/mydir2/mydir3 | Create nested directories |
+
+### cp Command
+
+| Command | Description |
+|---------|-------------|
+| cp file1 file2 | Copy file |
+| cp file1 dir1/file2 | Copy as another name |
+| cp -i file1 file2 | Prompt before overwrite |
+| cp -p file1 file2 | Preserve permissions |
+| cp -v file1 file2 | Verbose copy |
+| cp -r dir1 dir2/ | Recursive copy |
+| cp -r file1 file2 dir1 dir2 destination_directory/ | Copy multiple |
+
+### mv Command
+
+| Command | Description |
+|---------|-------------|
+| mv file1 file2 | Rename file |
+| mv file1 dir1/ | Move file |
+| mv -i file1 dir1/ | Prompt before overwrite |
+| mv -n file1 dir1/ | Prevent overwrite |
+| mv -u file1 dir1/ | Move if newer |
+| mv file1 dir1/file2 | Move as another name |
+| mv file1 file2 dir1/ dir2/ destination_directory/ | Move multiple |
+
+### rm Command
+
+| Command | Description |
+|---------|-------------|
+| rm file1 | Remove file |
+| rm -v file1 | Verbose remove |
+| rm -r dir1/ | Remove directory |
+| rm -rf dir1/ | Remove directory (no prompt) |
+| rm -ri file1 dir1/ | Prompt before remove |
+| shred -vu -n 100 file1 | Secure remove |
+
+## 16. Piping & Redirection Examples
+
+| Command | Description |
+|---------|-------------|
+| ls -lSh /etc/ | head | First 10 files by size |
+| ps -ef | grep sshd | Check if sshd running |
+| ps aux --sort=-%mem | head -n 3 | Top 3 by memory |
+| ps aux > running_processes.txt | Output redirection |
+| who -H > loggedin_users.txt | Output redirection |
+| id >> loggedin_users.txt | Append to file |
+| tail -n 10 /var/log/*.log > output.txt 2> errors.txt | Output and error |
+| tail -n 2 /etc/passwd /etc/shadow > output_errors.txt 2>&1 | Output and error to same file |
+| cat -n /var/log/auth.log | grep -ai "authentication failure" | wc -l | Count failures |
+| cat -n /var/log/auth.log | grep -ai "authentication failure" > auth.txt | Save failures |
+
+## 17. Finding Files (find, plocate)
+
+| Command | Description |
+|---------|-------------|
+| locate filename | Find by name (wildcard) |
+| locate -i filename | Case-insensitive |
+| locate -r '/filename$' | Exact name |
+| locate -b filename | Basename |
+| locate -r 'regex' | Regex search |
+| locate -e filename | Check existence |
+| which command | Show command path |
+| which -a command | Show all paths |
+| sudo updatedb | Update plocate db |
+
+### find Command
+
+| Option | Description |
+|--------|-------------|
+| -type f, d, l, s, p | File, dir, link, etc. |
+| -name filename | Name match |
+| -iname filename | Case-insensitive name |
+| -size n, +n, -n | Size |
+| -perm permissions | Permissions |
+| -links n, +n, -n | Links |
+| -atime n, -mtime n, ctime n | Time |
+| -user owner | Owner |
+| -group group_owner | Group |
+
+Example:
+`find ~ -type f -size +1M` (files > 1MB)
+
+## 18. VIM Editor
+
+| Mode | Description |
+|------|-------------|
+| Command | Default mode |
+| Insert | Insert text |
+| Last Line | Command line |
+
+VIM config: `~/.vimrc`
+
+| Shortcut | Action |
+|----------|-------|
+| i | Insert before cursor |
+| I | Insert at line start |
+| a | Insert after cursor |
+| A | Insert at line end |
+| o | Insert on next line |
+| : | Enter Last Line mode |
+| ESC | Return to Command mode |
+| w! | Save file |
+| q! | Quit without saving |
+| wq! | Save and quit |
+| e! | Undo to last saved |
+| set nu | Show line numbers |
+| set nonu | Hide line numbers |
+| syntax on/off | Toggle syntax |
+| %s/search/replace/g | Replace |
+| x | Remove char under cursor |
+| dd | Cut current line |
+| 5dd | Cut 5 lines |
+| ZZ | Save and quit |
+| u | Undo |
+| G | End of file |
+| $ | End of line |
+| 0 or ^ | Start of line |
+| :n | Go to line n |
+| Shift+v | Select line |
+| y | Yank/copy |
+| p | Paste after cursor |
+| P | Paste before cursor |
+| /string | Search forward |
+| ?string | Search backward |
+| n/N | Next/previous occurrence |
+
+| Command | Description |
+|---------|-------------|
+| vim -o file1 file2 | Open files in stacked windows |
+| vim -d file1 file2 | Diff files |
+| Ctrl+w | Move between files |
+
+## 19. Archiving & Compression
+
+| Option | Description |
+|--------|-------------|
+| c | Create |
+| x | Extract |
+| t | List contents |
+| czvf output.gz input | Create compressed archive |
+
+## 20. Hardlink & Symbolic Links
+
+| Type | Description |
+|------|-------------|
+| Hardlink | Both files point to same inode; changes affect both; cannot hardlink dirs/disks |
+| Symlink | Points to original file; can be broken; can link dirs |
+
+| Command | Description |
+|---------|-------------|
+| ln origin target | Create hardlink |
+| ln -s origin target | Create symlink |
 
----
-
-
-## Running commands as root (sudo, su)
-
- 
-### running a command as root (only users that belong to sudo group [Ubuntu] or wheel [CentOS])
-sudo command
- 
-### becoming root temporarily in the terminal
-sudo su      # => enter the user's password
- 
-### setting the root password
-sudo passwd root
- 
-### changing a user's password
-passwd username
- 
-### becoming root temporarily in the terminal
-su     # => enter the root password
-
----
-
-
-## Linux Paths
-
- 
-.       # => the current working directory
-..      # => the parent directory
-~       # => the user's home directory
- 
-cd      # => changing the current directory to user's home directory
-cd ~    # => changing the current directory to user's home directory
-cd -    # => changing the current directory to the last directory
-cd /path_to_dir    # => changing the current directory to path_to_dir 
-pwd     # => printing the current working directory
- 
-### installing tree
-sudo apt install tree
- 
-tree directory/     # => Ex: tree .
-tree -d .           # => prints only directories
-tree -f .           # => prints absolute paths
-
----
-
-
-
-## The ls Command
-
- ls [OPTIONS] [FILES]
-
-
-
-
-
-### listing the current directory
-
- ~ => user's home directory
-
- . => current directory
-
- .. => parent directory
-
-ls
-
-ls .
-
-
-
-### listing more directories
-
-ls ~ /var /
-
-
-
-### -l => long listing
-
-ls -l ~
-
-
-
-### -a => listing all files and directories including hidden ones
-
-ls -la ~
-
-
-
-### -1 => listing on a single column
-
-ls -1 /etc
-
-
-
-### -d => displaying information about the directory, not about its contents
-
-ls -ld /etc
-
-
-
-### -h => displaying the size in human readable format
-
-ls -h /etc
-
-
-
-### -S => displaying sorting by size
-
-ls -Sh /var/log
-
-
-
-<b>Note:<b> ls does not display the size of a directory and all its contents. Use du instead
-
-du -sh ~
-
-
-
-### -X => displaying sorting by extension
-
-ls -lX /etc
-
-
-
-### --hide => hiding some files
-
-ls --hide=*.log /var/log
-
-
-
-### -R => displaying a directory recursively
-
-ls -lR ~
-
-
-
-### -i => displaying the inode number
-
-ls -li /etc
-
----
-
-
-## File Timestamps and Date
-
- 
-### displaying atime
-ls -lu
- 
-### displaying mtime
-ls -l
-ls -lt
- 
-### displaying ctime
-ls -lc
- 
-### displaying all timestamps
-stat file.txt
- 
-### displaying the full timestamp
-ls -l --full-time /etc/
- 
-### creating an empty file if it does not exist, update the timestamps if the file exists
-touch file.txt
- 
-### changing only the access time to current time
-touch -a file
- 
-### changing only the modification time to current time
-touch -m file
- 
-### changing the modification time to a specific date and time
-touch -m -t 201812301530.45 a.txt
- 
-### changing both atime and mtime to a specific date and time
-touch -d "2010-10-31 15:45:30" a.txt
- 
-### changing the timestamp of a.txt to those of b.txt
-touch a.txt -r b.txt
- 
-### displaying the date and time
-date
- 
-### showing this month's calendar
-cal
- 
-### showing the calendar of a specific year
-cal 2021
- 
-### showing the calendar of a specific month and year
-cal 7 2021
- 
-### showing the calendar of previous, current and next month
-cal -3
- 
-### setting the date and time
-date --set="2 OCT 2020 18:00:00"
- 
-### displaying the modification time and sorting the output by name.
-ls -l
- 
-### displaying the output sorted by modification time, newest files first
-ls -lt
- 
-### displaying and sorting by atime
-ls -ltu
- 
-### reversing the sorting order
-ls -ltu --reverse
-
-
------
-
-
-
-## Viewing files (cat, less, more, head, tail, watch)
-
- 
-### displaying the contents of a file
-cat filename
- 
-### displaying more files
-cat filename1 filename2
- 
-### displaying the line numbers
-can -n filename
- 
-### concatenating 2 files
-cat filename1 filename2 > filename3
- 
-### viewing a file using less
-less filename
- 
-### less shortcuts:
- h         => getting help
- q         => quit
- enter     => show next line
- space     => show next screen
- /string   => search forward for a string
- ?string   => search backwards for a string
- n / N     => next/previous appearance
- 
- 
-### showing the last 10 lines of a file
-tail filename
- 
-### showing the last 15 lines of a file
-tail -n 15 filename
- 
-### showing the last lines of a file starting with line no. 5
-tail -n +5 filename
- 
-### showing the last 10 lines of the file in real-time
-tail -f filename
- 
- 
-### showing the first 10 lines of a file
-head filename
- 
-### showing the first 15 lines of a file
-head -n 15 filename
- 
-### running repeatedly a command with refresh of 3 seconds
-watch -n 3 ls -l
-
----
-
-
-## Working with files and directory (touch, mkdir, cp, mv, rm, shred)
-
- 
-### creating a new file or updating the timestamps if the file already exists
-touch filename
- 
-### creating a new directory
-mkdir dir1
- 
-### creating a directory and its parents as well
-mkdir -p mydir1/mydir2/mydir3
- 
-
-## The cp command
-
-### copying file1 to file2 in the current directory
-cp file1 file2
- 
-### copying file1 to dir1 as another name (file2)
-cp file1 dir1/file2
- 
-### copying a file prompting the user if it overwrites the destination
-cp -i file1 file2
- 
-### preserving the file permissions, group and ownership when copying
-cp -p file1 file2
- 
-### being verbose
-cp -v file1 file2
- 
-### recursively copying dir1 to dir2 in the current directory
-cp -r dir1 dir2/
- 
-### copy more source files and directories to a destination directory
-cp -r file1 file2 dir1 dir2 destination_directory/
- 
- 
-
-## The mv command ###
-
-### renaming file1 to file2
-mv file1 file2
- 
-### moving file1 to dir1 
-mv file1 dir1/
- 
-### moving a file prompting the user if it overwrites the destination file
-mv -i file1 dir1/
- 
-### preventing a existing file from being overwritten
-mv -n file1 dir1/
- 
-### moving only if the source file is newer than the destination file or when the destination file is missing
-mv -u file1 dir1/
- 
-### moving file1 to dir1 as file2
-mv file1 dir1/file2
- 
-### moving more source files and directories to a destination directory
-mv file1 file2 dir1/ dir2/ destination_directory/
- 
-
-## The rm command 
-
-### removing a file
-rm file1
- 
-### being verbose when removing a file
-rm -v file1
- 
-### removing a directory
-rm -r dir1/
- 
-### removing a directory without prompting
-rm -rf dir1/
- 
-### removing a file and a directory prompting the user for confirmation
-rm -ri fil1 dir1/
- 
-### secure removal of a file (verbose with 100 rounds of overwriting)
-shred -vu -n 100 file1
-
-----
-
-
-## Piping and Command Redirection
-
- 
-### Piping Examples:
- 
-ls -lSh /etc/ | head            # see the first 10 files by size
-ps -ef | grep sshd              # checking if sshd is running
-ps aux --sort=-%mem | head -n 3  # showing the first 3 process by memory consumption
- 
-### Command Redirection
- 
-### output redirection
-ps aux > running_processes.txt
-who -H > loggedin_users.txt
- 
-### appending to a file
-id >> loggedin_users.txt
- 
-### output and error redirection
-tail -n 10 /var/log/*.log > output.txt 2> errors.txt
- 
-### redirecting both the output and errors to the same file
-tail -n 2 /etc/passwd /etc/shadow > output_errors.txt 2>&1
- 
-cat -n /var/log/auth.log | grep -ai "authentication failure" | wc -l
-cat -n /var/log/auth.log | grep -ai "authentication failure" > auth.txt     # => piping and redirection
-
------
-
-
-## Finding Files (find, plocate)
-
- 
-## LOCATE 
-locate is a symlink (shortcut) to plocate
- 
-### updating the plocate db
-sudo updatedb
- 
-### finding file by name
-locate filename # => filename is expanded to *filename*
-locate -i filename # => the filename is case insensitive
-locate -r '/filename$' # => finding by exact name
- 
-### finding using the basename
-locate -b filename
- 
-### finding using regular expressions
-locate -r 'regex'
- 
-### checking that the file exists
-locate -e filename
- 
-### showing command path
-which command
-which -a command
- 
- 
-## FIND 
-find PATH OPTIONS
- 
-  Example: find ~ -type f -size +1M # => finding all files in ~ bigger than 1 MB
- 
-## Options:
-- -type f, d, l, s, p
-- -name filename
-- -iname filename # => case-insensitive
-- -size n, +n, -n
-- -perm permissions
-- -links n, +n, -n
-- -atime n, -mtime n, ctime n
-- -user owner
-- -group group_owner
-
----
-
-## Commands - VIM
-
-## VIM
-
- 
-Modes of operation: Command, Insert, and Last Line Modes.
-VIM Config File: ~/.vimrc
- 
-### Entering the Insert Mode from the Command Mode
-i  => insert before the cursor
-I  => insert at the beginning of the line
-a  => insert after the cursor
-A  => insert at the end of the line
-o  => insert on the next line
- 
-### Entering the Last Line Mode from the Command Mode
-:
- 
-### Returning to Command Mode from Insert or Last Line Mode 
-ESC
- 
-### Shortcuts in Last Line Mode
-w!  => write/save the file
-q!  => quit the file without saving
-wq! => save/write and quit
-e!  => undo to the last saved version of the file
-set nu => set line numbers
-set nonu  => unset line numbers
-syntax on|off
-%s/search_string/replace_string/g
- 
-### Shortcuts in Command Mode
-x   => remove char under the cursor
-dd  => cut the current line
-5dd => cut 5 lines
-ZZ  => save and quit
-u   => undo
-G   => move to the end of file
-$   => move to the end of line
-0 or ^  => move to the beginning of file
-:n (Ex :10) => move to line n
-Shift+v     => select the current line
-y           => yank/copy to clipboard
-p           => paste after the cursor
-P           => paste before the cursor
-/string     => search for string forward
-?string     => search for string backward
-n           => next occurrence
-N           => previous occurrence
- 
-### Opening more files in stacked windows
-vim -o file1 file2
- 
-### Opening more files and highlighting the differences
-vim -d file1 file2
-Ctrl+w => move between files
-
----
-
-## Archiving and compressing files 
-
-### TAR
-
-- c = creates
-- x = extracts
-- t = displays contents
-
-- czvf output.gz input_in_list
-
-
----
-
-## Hardlink and Symbolic Links
-
-- Hardlink: both files point to the same file, changing one will change the other (same inode). You cannot hardlink directories or other disks.
-
-  ln origin target
-
-- Symlink (soft links): similar to hardlink but doesn't share the same inode. Symlinks can be broken (moving or deleting the origin file). You can create symlink to directories.
-
-  ln -s origin target
-
----
-
-## Menu
-
-## Submenu
