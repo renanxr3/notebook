@@ -1,153 +1,118 @@
-### Installing Docker on Ubuntu ###
 
-#### uninstalling any old versions
-sudo apt remove docker docker.io containerd runc
+# Docker on Ubuntu
 
+[Official Docker installation guide for Linux (Ubuntu and others)](https://docs.docker.com/engine/install/)
 
-#### adding Docker’s official GPG signing key:
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+| Step | Command | Description |
+|---|---|---|
+| 1 | sudo apt remove docker docker.io containerd runc | Uninstall old versions |
+| 2 | curl -fsSL https://download.docker.com/linux/ubuntu/gpg \| sudo apt-key add - | Add Docker’s official GPG key |
+| 3 | sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | Add official Docker repository |
+| 4 | sudo apt update | Refresh apt cache |
+| 5 | apt-cache policy docker-ce | Select Docker repository as default |
+| 6 | sudo apt install docker-ce docker-ce-cli containerd.io | Install Docker |
+| 7 | sudo systemctl status docker | Check Docker status |
+| 8 | sudo usermod -aG docker ${USER} | Add current user to Docker group |
+| 9 | docker --version | Check Docker version |
 
+---
 
-#### adding the official docker repository 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+## Running a Web Server in a Docker Container
 
-#### refreshing the apt cache
-sudo apt update
+| Command | Description |
+|---|---|
+| docker container run -d -p 80:80 --name mysite1 nginx | Run nginx, port 80 |
+| docker container run -d -p 8080:80 --name mysite2 nginx | Run nginx, port 8080 |
+| docker container run -d -p 8081:80 --name mysite3 nginx | Run nginx, port 8081 |
 
-#### selecting the docker repository as the default one
-apt-cache policy docker-ce
+- `-d`: detach and run in the background
+- `--name`: container name, must be unique
+- `-p X:Y`: publish container's port Y to host port X
+- `-P`: publish all exposed ports to random ports
 
-#### installing docker
-sudo apt install docker-ce docker-ce-cli containerd.io
+---
 
-#### checking its status
-sudo systemctl status docker
+## Listing Images and Containers
 
-#### adding the current user to the docker group to be able to run the docker command
-sudo usermod -aG docker ${USER}
+| Command | Description |
+|---|---|
+| docker images | List images (old) |
+| docker image ls | List images (new) |
+| docker ps | List running containers (old) |
+| docker container ls | List running containers (new) |
+| docker ps -a | List all containers |
+| docker container ls -a | List all containers |
+| docker container ls -a -f status=exited | Filter by exited status |
+| docker container ls -q | Print only container IDs |
 
-docker --version
+---
 
----------------------------------------------------------------------------------------------------------------------
+## Stopping and Removing Containers
 
-##### Running a Web Server in a Docker Container ##
-docker container run -d --p 80:80 --name mysite1 nginx  
-docker container run -d --p 8080:80 --name mysite2 nginx  
-docker container run -d --p 8081:80 --name mysite3 nginx  
+| Command | Description |
+|---|---|
+| docker container stop CONTAINER_ID/NAME | Stop container |
+| docker container rm CONTAINER_ID/NAME | Remove stopped container |
+| docker container rm -f CONTAINER_ID/NAME | Force remove running container |
+| docker container rm $(docker container ls -f status=exited -q) | Remove all stopped containers |
 
-#### -d => detach and run in the background
-#### --name => container name, must be unique, randomly chosen from a list if it's not given
-#### -p X:Y => publish a container's port to the host 
-#### process listens on port Y in the container but is accessed on port X from the outside (LAN/Internet)
-#### -P => publish all exposed ports to random ports
+---
 
-#### listing local images
-docker images # old command
-docker image ls # new command
+## Removing Images and Pruning System
 
-#### listing all running containers
-docker ps # old command
-docker container ls # new command
-#### -q => printing only the containers' ids
+| Command | Description |
+|---|---|
+| docker rmi IMAGE_NAME | Remove image (old) |
+| docker image rm IMAGE_NAME | Remove image (new) |
+| docker system prune | Remove dangling images, stopped containers, unused networks |
+| docker system prune -a | Remove unused images as well |
 
-#### listing all containers (created, running, stopped)
-docker ps -a
-docker container ls -a
+---
 
-#### filtering by status
-docker container ls -a -f status=exited
+## Commit Changes in a Container to a New Image
 
-#### stopping a container
-docker container stop CONTAINER_ID|CONTAINER_NAME
-Example: docker container stop mysite1
+1. Start container, get shell access, make changes, exit:
 
-#### removing a container (must be stopped)
-docker container rm CONTAINER_ID|CONTAINER_NAME
-#### -f => force remove the container (can be running)
-Example: docker container rm mysite1
+    ```bash
+    docker container run -it --name=container1 centos
+    ```
 
-#### removing all stopped containers
-docker container rm $(docker container ls -f status=exited -q)
+2. Create new image from modified container:
 
-#### removing an image
-docker rmi IMAGE_NAME # => old command
-docker image rm IMAGE_NAME # => new command
-Example: docker image rm nginx
+    ```bash
+    docker commit -m "What did you do to the image" -a "Author Name" CONTAINER_ID/NAME repository/new_image_name:tag
+    # Example:
+    docker commit -m "nmap installed" -a "Andrei D." container1 ddandrei/my_centos
+    ```
 
-#### removing dangling images, stopped containers, dangling build cache and networks not used
-docker system prune
-#### -a => remove unused images, as well
+3. Start containers from the image:
 
----------------------------------------------------------------------------------------------------------------------
+    ```bash
+    docker image ls
+    docker container run -it ddandrei/my_centos
+    ```
 
-##### Commiting changes in a container to a new image
+---
 
-#### STEP 1
+## Tagging and Pushing Images
 
-#### start the container, get shell access, make any changes and exit
+| Command | Description |
+|---|---|
+| docker image tag nginx ddandrei/nginx:custom | Tag nginx image |
+| docker image tag ddandrei/my_centos:latest ddandrei/my_centos:1.0 | Tag custom image |
+| docker image ls | List images |
+| docker login | Login to Docker Hub |
+| docker image push ddandrei/nginx:custom | Push custom image |
 
-docker container run -it --name=container1 centos
+---
 
-#### STEP 2
+## Docker Volumes
 
-#### create a new image from the modified container
-
-docker commit -m "What did you do to the image" -a "Author Name" CONTAINER_ID|CONTAINER_NAME repository/new_image_name:tag
-
-Example: docker commit -m "nmap installed" -a "Andrei D." container1 ddandrei/my_centos
-
-#### STEP 3
-
-#### start containers from the image
-
-docker image ls
-
-docker container run -it ddandrei/my_centos
-
-#### adding a new tag to an existing image
-
-docker image tag nginx ddandrei/nginx:custom
-
-docker image tag ddandrei/my_centos:latest ddandrei/my_centos:1.0
-
-docker image ls
-
-#### pushing custom images to docker Hub
-
-#### STEP 1
-
-#### create an account on hub.docker.com
-
-#### STEP 2
-
-docker login => enter username and password
-
-#### STEP 3
-
-docker image push ddandrei/nginx:custom # => the username on docker hub must match the image's repository (ddandrei)
-
----------------------------------------------------------------------------------------------------------------------
-
-#### creating a new volume
-docker volume create mysite
-
-#### listing all volumes
-docker volume ls
-
-#### inspecting a volume
-docker volume inspect mysite
-
-#### removing a volume
-docker volume rm mysite
-docker volume prune # => remove all unused volumes
-
-#### starting a container with the volume
-docker container run -d --name mywebapp -p 80:80 -v mysite:/usr/share/nginx/html nginx
-
----------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
----------------------------------------------------------------------------------------------------------------------
+| Command | Description |
+|---|---|
+| docker volume create mysite | Create volume |
+| docker volume ls | List volumes |
+| docker volume inspect mysite | Inspect volume |
+| docker volume rm mysite | Remove volume |
+| docker volume prune | Remove all unused volumes |
+| docker container run -d --name mywebapp -p 80:80 -v mysite:/usr/share/nginx/html nginx | Start container with volume |
